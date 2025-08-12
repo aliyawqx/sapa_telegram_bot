@@ -1,3 +1,19 @@
+from flask import Flask
+from threading import Thread
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "I'm alive"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+Thread(target=run).start()
+
+
+
 import os
 import re
 from dotenv import load_dotenv
@@ -25,7 +41,7 @@ client = MongoClient(MONGO_URI)
 db = client["telegram_bot_db"]
 collection = db["form_submissions"]
 
-# Состояния
+
 COMPANY, NAME, EMAIL, PHONE, CONFIRM, CHANGE_FIELD, UPDATE_FIELD = range(7)
 
 
@@ -110,7 +126,7 @@ async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         context.user_data["admin_message_id"] = message.message_id
 
-        # ⚡ Фильтруем служебные ключи
+
         safe_data = {
             k: v
             for k, v in context.user_data.items()
@@ -118,12 +134,10 @@ async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
 
         if "mongo_id" in context.user_data:
-            # Обновляем старую запись
             collection.update_one(
                 {"_id": context.user_data["mongo_id"]}, {"$set": safe_data}
             )
         else:
-            # Вставляем новую запись
             result = collection.insert_one(safe_data)
             context.user_data["mongo_id"] = result.inserted_id
 
