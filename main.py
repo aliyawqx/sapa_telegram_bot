@@ -247,7 +247,12 @@ def main():
     )
 
     app.add_handler(conv_handler)
-    app.run_polling(drop_pending_updates=True)
+    app.run_webhook(
+    listen="0.0.0.0",
+    port=int(os.environ.get("PORT", 10000)),
+    url_path=BOT_TOKEN,
+    webhook_url=f"{WEBHOOK_URL}/{BOT_TOKEN}",
+)
 
 
 if __name__ == "__main__":
