@@ -15,7 +15,7 @@ from pymongo import MongoClient
 import certifi
 from telegram.ext import ApplicationBuilder
 
-
+load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID")
 MONGO_URI = os.getenv("MONGO_URI")
@@ -245,12 +245,8 @@ def main():
     )
 
     app.add_handler(conv_handler)
-    app.run_webhook(
-    listen="0.0.0.0",
-    port=int(os.environ.get("PORT", 10000)),
-    url_path=BOT_TOKEN,
-    webhook_url=f"{WEBHOOK_URL}/{BOT_TOKEN}",
-)
+    app.run_polling(drop_pending_updates=True)
+
 
 
 if __name__ == "__main__":
