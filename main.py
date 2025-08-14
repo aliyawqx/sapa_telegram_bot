@@ -1,18 +1,3 @@
-from flask import Flask
-from threading import Thread
-
-app = Flask('')
-
-@app.route('/')
-def home():
-    return "I'm alive"
-
-def run():
-    app.run(host='0.0.0.0', port=8080)
-
-Thread(target=run).start()
-
-
 
 import os
 import re
@@ -28,6 +13,8 @@ from telegram.ext import (
 )
 from pymongo import MongoClient
 import certifi
+from telegram.ext import ApplicationBuilder
+
 
 load_dotenv(os.path.join(os.path.dirname(__file__), 'my.env'))
 
@@ -260,8 +247,7 @@ def main():
     )
 
     app.add_handler(conv_handler)
-    app.run_polling()
-    app.idle()
+    app.run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":
