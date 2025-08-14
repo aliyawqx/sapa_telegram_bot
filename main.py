@@ -16,8 +16,6 @@ import certifi
 from telegram.ext import ApplicationBuilder
 
 
-load_dotenv(os.path.join(os.path.dirname(__file__), 'my.env'))
-
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID")
 MONGO_URI = os.getenv("MONGO_URI")
