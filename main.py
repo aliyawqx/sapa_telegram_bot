@@ -27,8 +27,10 @@ from telegram.ext import (
     filters as Filters,
 )
 from pymongo import MongoClient
+import certifi
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), 'my.env'))
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID")
 MONGO_URI = os.getenv("MONGO_URI")
@@ -37,7 +39,7 @@ print(f"BOT_TOKEN: {BOT_TOKEN}")
 print(f"ADMIN_CHAT_ID: {ADMIN_CHAT_ID}")
 print(f"MONGO_URI: {MONGO_URI}")
 
-client = MongoClient(MONGO_URI)
+client = MongoClient(MONGO_URI, tls= True, tlsCAFile=certifi.where())
 db = client["telegram_bot_db"]
 collection = db["form_submissions"]
 
